@@ -1,0 +1,10 @@
+// filepath: /c:/Users/User/Documents/AdrianDev/360visualizer/views/index.jade
+extends layout
+
+block content
+  h1= title
+  form(action="/upload", method="post", enctype="multipart/form-data", id="form")
+    input(type="file", name="files", id="fileInput", multiple)
+    button(type="submit", id="submitBtn") Subir fotos
+  p#message
+  img(id="visualizer", src="", alt="360 Visualizer Image", draggable="false")
