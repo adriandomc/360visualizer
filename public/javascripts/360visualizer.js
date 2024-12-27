@@ -37,37 +37,46 @@ function loadVisualizer() {
 }
 
 function createVisualizer(images) {
-  var visualizer = document.getElementById('visualizer');
-  if (images.length > 0) {
-    visualizer.src = '/uploads/' + images[0];
+  const visualizer = document.getElementById('visualizer');
+  const preloaded = [];
+
+  // Preload all images
+  images.forEach(file => {
+    const img = new Image();
+    img.src = '/uploads/' + file;
+    preloaded.push(img);
+  });
+
+  let currentIndex = 0;
+  let isDragging = false;
+  let startX = 0;
+
+  // Show the first image after preload
+  if (preloaded.length > 0) {
+    visualizer.src = preloaded[0].src;
   }
 
-  var currentIndex = 0;
-  var isDragging = false;
-  var startX = 0;
-
-  visualizer.addEventListener('mousedown', function(event) {
+  visualizer.addEventListener('mousedown', event => {
     isDragging = true;
     startX = event.clientX;
   });
 
-  document.addEventListener('mouseup', function() {
+  document.addEventListener('mouseup', () => {
     isDragging = false;
   });
 
-  document.addEventListener('mousemove', function(event) {
+  document.addEventListener('mousemove', event => {
     if (isDragging) {
-      var deltaX = event.clientX - startX;
-      if (Math.abs(deltaX) > 10) { // Change image every 10 pixels moved
+      const deltaX = event.clientX - startX;
+      if (Math.abs(deltaX) > 10) {
         startX = event.clientX;
-        currentIndex = (currentIndex + (deltaX > 0 ? 1 : -1) + images.length) % images.length;
-        visualizer.src = '/uploads/' + images[currentIndex];
+        currentIndex = (currentIndex + (deltaX > 0 ? 1 : -1) + preloaded.length) % preloaded.length;
+        visualizer.src = preloaded[currentIndex].src;
       }
     }
   });
 
-  // Prevent default drag behavior
-  visualizer.addEventListener('dragstart', function(event) {
+  visualizer.addEventListener('dragstart', event => {
     event.preventDefault();
   });
 }
