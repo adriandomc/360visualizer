@@ -16,3 +16,8 @@ form {
   margin-top: 25px;
   width: 200px;
 }
+
+img {
+  width: 500px;
+  height: auto;
+}
