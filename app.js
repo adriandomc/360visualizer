@@ -67,15 +67,15 @@ app.use('/users', usersRouter);
 app.post('/upload', (req, res, next) => {
   clearUploadsFolder(err => {
     if (err) {
-      return res.status(500).send('Error clearing uploads folder');
+      return res.status(500).send('Error al limpiar el folder de uploads');
     }
     next();
   });
 }, upload.array('files', 12), (req, res) => {
   if (!req.files || req.files.length === 0) {
-    return res.status(400).send('No files were uploaded.');
+    return res.status(400).send('No se subieron los archivos.');
   }
-  res.status(200).send('Files uploaded successfully');
+  res.status(200).send('Archivos subidos exitosamente');
 });
 
 // Add this route before the 404 error handler
@@ -83,7 +83,7 @@ app.get('/files', (req, res) => {
   const uploadDir = path.join(__dirname, 'uploads');
   fs.readdir(uploadDir, (err, files) => {
     if (err) {
-      return res.status(500).send('Unable to scan files');
+      return res.status(500).send('No se pueden escanear los archivos');
     }
     res.json(files);
   });
